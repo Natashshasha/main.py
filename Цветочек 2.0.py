@@ -45,6 +45,22 @@ def get_foxURL():
         # url.split("/")[-1]
     return url
 
+def get_quote():
+    array_anekdots = []
+    req_anek = requests.get('https://www.plerdy.com/ru/blog/top-215-motivational-quotes/')
+    if req_anek.status_code == 200:
+        soup = bs4.BeautifulSoup(req_anek.text, "html.parser")
+        result_find = soup.select('.entry-content')
+        for result in result_find:
+            print(result)
+
+            # array_anekdots.append(result.getText().strip())
+    if len(array_anekdots) > 0:
+        return array_anekdots[0]
+    else:
+        return ""
+
+
 def get_anekdot():
     array_anekdots = []
     req_anek = requests.get('http://anekdotme.ru/random')
@@ -83,6 +99,7 @@ def get_text_messages(message):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         markup.add(types.KeyboardButton("Прислать собаку"),
                    types.KeyboardButton("Прислать лису"),
+                   types.KeyboardButton("Прислать мотивирующую цитату"),
                    types.KeyboardButton("Прислать анекдот"),
                    types.KeyboardButton("Игры"),
                    back)
@@ -241,6 +258,9 @@ def get_text_messages(message):
 
     elif ms_text == "Прислать лису":
         bot.send_photo(chat_id, photo=get_foxURL(), caption="Вот тебе лиса!")
+
+    elif ms_text == "Прислать мотивирующую цитату":
+        bot.send_photo(chat_id, text=get_quote(), caption="Вот тебе цитата!")
 
     elif ms_text == "Прислать анекдот":  # .............................................................................
         bot.send_message(chat_id, text=get_anekdot())
