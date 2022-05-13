@@ -70,6 +70,22 @@ def get_anekdot():
         array_anekdots.append(result.getText().strip())
     return array_anekdots[0]
 
+def get_news():
+    array_anekdots = []
+    req_anek = requests.get('https://www.banki.ru/news/lenta')
+    if req_anek.status_code == 200:
+        soup = bs4.BeautifulSoup(req_anek.text, "html.parser")
+        result_find = soup.select('.doFpcq')
+        for result in result_find:
+            print(result)
+
+            # array_anekdots.append(result.getText().strip())
+    if len(array_anekdots) > 0:
+        return array_anekdots[0]
+    else:
+        return ""
+
+
 
 # -----------------------------------------------------------------------
 
@@ -267,6 +283,14 @@ def get_text_messages(message):
 
     elif ms_text == "WEB-камера":
         bot.send_message(chat_id, text="еще не готово...")
+    elif ms_text in GameRPS.values:
+        gameRSP = getGame(chat_id)
+        if gameRSP is None:  # если мы случайно попали в это меню, а объекта с игрой нет
+            goto_menu(bot, chat_id, "Выход")
+            return
+        text_game = gameRSP.playerChoice(ms_text)
+        bot.send_message(chat_id, text=text_game)
+        gameRSP.newGame()
 
     elif ms_text == "Игра в 21":
         bot.send_message(chat_id, text="еще не готово...")
