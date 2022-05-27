@@ -11,7 +11,7 @@ import requests
 response_to_input = ""  # для формирования проверки введенного имени/возраста/ответа на задачу
 userName = ""  # для запоминания имени пользователя
 userAge = -1  # для запоминания возраста
-bot = telebot.TeleBot('5168714419:AAHUahLd3CHfaRk50j4oOWuEqcQ-9jPD0M4')  # Создаем экземпляр бота @Ivanov_Ivan_1MD19_bot
+bot = telebot.TeleBot('5168714419:AAFRFYftvFE1DTDCMzG-b0dQ8OSSg43O2uI')  # Создаем экземпляр бота @Ivanov_Ivan_1MD19_bot
 
 # -----------------------------------------------------------------------
 # Функция, обрабатывающая команду /start
@@ -284,7 +284,7 @@ def get_text_messages(message):
     elif ms_text == "WEB-камера":
         bot.send_message(chat_id, text="еще не готово...")
 
-    elif ms_text in GameRPS.values:
+    elif ms_text in gameRPS.values:
         gameRSP = getGame(chat_id)
         if gameRSP is None:  # если мы случайно попали в это меню, а объекта с игрой нет
             goto_menu(bot, chat_id, "Выход")

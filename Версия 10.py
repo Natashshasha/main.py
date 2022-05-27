@@ -2,14 +2,14 @@
 
 import telebot  # pyTelegramBotAPI 4.3.1
 from telebot import types
-import botGames  # бот-игры, файл botGames.py
+import botGames
 import menuBot
 from menuBot import Menu  # в этом модуле есть код, создающий экземпляры классов описывающих моё меню
 import DZ  # домашнее задание от первого урока
 import fun  # развлечения
 
-
-bot = telebot.TeleBot('5168714419:AAHUahLd3CHfaRk50j4oOWuEqcQ-9jPD0M4')  # Создаем экземпляр бота
+bot = telebot.TeleBot('5340646996:AAHdPTy1mc4qvVo_mxTF-o2rpi7oqZxC-m8')  # Создаем экземпляр бота
+# bot = telebot.TeleBot('5166133359:AAHDTRN51Odhtpi9Bkn8BxbhfZrBTki9gJo')  # Создаем экземпляр бота
 
 
 # -----------------------------------------------------------------------
@@ -18,8 +18,8 @@ bot = telebot.TeleBot('5168714419:AAHUahLd3CHfaRk50j4oOWuEqcQ-9jPD0M4')  # Со�
 def command(message):
     chat_id = message.chat.id
     bot.send_sticker(chat_id, "CAACAgIAAxkBAAIaeWJEeEmCvnsIzz36cM0oHU96QOn7AAJUAANBtVYMarf4xwiNAfojBA")
-    txt_message = f"Привет, {message.from_user.first_name}! Я тестовый бот для курса программирования на языке Python"
-    bot.send_message(chat_id, text=txt_message, reply_markup=Menu.getMenu(chat_id, "Главное меню").markup)
+    txt_message = f"Хаюшки, {message.from_user.first_name}! Я тестовый бот для курса программирования на языке Python"
+    bot.send_message(chat_id, text=txt_message, reply_markup=Menu.getMenu(chat_id, "Менюшка").markup)
 
 
 # -----------------------------------------------------------------------
@@ -32,33 +32,6 @@ def get_messages(message):
     sticker = message.sticker
     bot.send_message(message.chat.id, sticker)
 
-    # глубокая инспекция объекта
-    # import inspect,pprint
-    # i = inspect.getmembers(sticker)
-    # pprint.pprint(i)
-
-
-# -----------------------------------------------------------------------
-# Получение аудио от юзера
-@bot.message_handler(content_types=['audio'])
-def get_messages(message):
-    chat_id = message.chat.id
-    bot.send_message(chat_id, "Это " + message.content_type)
-
-    audio = message.audio
-    bot.send_message(chat_id, audio)
-
-
-# -----------------------------------------------------------------------
-# Получение голосовухи от юзера
-@bot.message_handler(content_types=['voice'])
-def get_messages(message):
-    chat_id = message.chat.id
-    bot.send_message(chat_id, "Это " + message.content_type)
-
-    voice = message.voice
-    bot.send_message(message.chat.id, voice)
-
 
 # -----------------------------------------------------------------------
 # Получение фото от юзера
@@ -69,58 +42,6 @@ def get_messages(message):
 
     photo = message.photo
     bot.send_message(message.chat.id, photo)
-
-
-# -----------------------------------------------------------------------
-# Получение видео от юзера
-@bot.message_handler(content_types=['video'])
-def get_messages(message):
-    chat_id = message.chat.id
-    bot.send_message(chat_id, "Это " + message.content_type)
-
-    video = message.video
-    bot.send_message(message.chat.id, video)
-
-
-# -----------------------------------------------------------------------
-# Получение документов от юзера
-@bot.message_handler(content_types=['document'])
-def get_messages(message):
-    chat_id = message.chat.id
-    mime_type = message.document.mime_type
-    bot.send_message(chat_id, "Это " + message.content_type + " (" + mime_type + ")")
-
-    document = message.document
-    bot.send_message(message.chat.id, document)
-    if message.document.mime_type == "video/mp4":
-        bot.send_message(message.chat.id, "This is a GIF!")
-
-
-# -----------------------------------------------------------------------
-# Получение координат от юзера
-@bot.message_handler(content_types=['location'])
-def get_messages(message):
-    chat_id = message.chat.id
-    bot.send_message(chat_id, "Это " + message.content_type)
-
-    location = message.location
-    bot.send_message(message.chat.id, location)
-
-    from Weather import WeatherFromPyOWN
-    pyOWN = WeatherFromPyOWN()
-    bot.send_message(chat_id, pyOWN.getWeatherAtCoords(location.latitude, location.longitude))
-    bot.send_message(chat_id, pyOWN.getWeatherForecastAtCoords(location.latitude, location.longitude))
-
-
-# -----------------------------------------------------------------------
-# Получение контактов от юзера
-@bot.message_handler(content_types=['contact'])
-def get_messages(message):
-    chat_id = message.chat.id
-    bot.send_message(chat_id, "Это " + message.content_type)
-
-    contact = message.contact
-    bot.send_message(message.chat.id, contact)
 
 
 # -----------------------------------------------------------------------
@@ -162,11 +83,12 @@ def get_text_messages(message):
             send_help(bot, chat_id)
 
     else:  # ======================================= случайный текст
-        bot.send_message(chat_id, text="Мне жаль, я не понимаю вашу команду: " + ms_text)
-        menuBot.goto_menu(bot, chat_id, "Главное меню")
+        bot.send_message(chat_id, text="Мне жаль, я не понимаю твою команду, телепортирую в меню ")
+        menuBot.goto_menu(bot, chat_id, "Менюшка")
 
 
-# -----------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------------------------
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
     # если требуется передать один или несколько параметров в обработчик кнопки,
@@ -190,18 +112,15 @@ def callback_worker(call):
 
 # -----------------------------------------------------------------------
 def send_help(bot, chat_id):
-    bot.send_message(chat_id, "Автор: Швец Андрей")
+    bot.send_message(chat_id, "Автор: Горностаева Анастасия")
     markup = types.InlineKeyboardMarkup()
-    btn1 = types.InlineKeyboardButton(text="Напишите автору", url="https://t.me/user59387")
+    btn1 = types.InlineKeyboardButton(text="Напишите автору", url="")
     markup.add(btn1)
-    img = open('Швец Андрей.png', 'rb')
-    bot.send_photo(chat_id, img, reply_markup=markup)
 
     bot.send_message(chat_id, "Активные пользователи чат-бота:")
     for el in menuBot.Users.activeUsers:
         bot.send_message(chat_id, menuBot.Users.activeUsers[el].getUserHTML(), parse_mode='HTML')
 
 # ---------------------------------------------------------------------
-
 
 bot.polling(none_stop=True, interval=0)  # Запускаем бота
