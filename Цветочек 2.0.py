@@ -283,6 +283,7 @@ def get_text_messages(message):
 
     elif ms_text == "WEB-камера":
         bot.send_message(chat_id, text="еще не готово...")
+
     elif ms_text in GameRPS.values:
         gameRSP = getGame(chat_id)
         if gameRSP is None:  # если мы случайно попали в это меню, а объекта с игрой нет

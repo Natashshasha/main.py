@@ -1,4 +1,4 @@
-
+# ======================================= модуль ДЗ
 # -----------------------------------------------------------------------
 def get_text_messages(bot, cur_user, message):
     chat_id = message.chat.id
@@ -69,8 +69,9 @@ def my_inputInt_SecondPart(message, botQuestion, txtQuestion, ResponseHandler):
         ResponseHandler(botQuestion, chat_id, var_int)
     except ValueError:
         botQuestion.send_message(chat_id,
-                                 text="Можно вводить ТОЛЬКО целое число в десятичной системе исчисления (символами от 0 до 9)!\nПопробуйте еще раз...")
+                         text="Можно вводить ТОЛЬКО целое число в десятичной системе исчисления (символами от 0 до 9)!\nПопробуйте еще раз...")
         my_inputInt(botQuestion, chat_id, txtQuestion, ResponseHandler)  # это не рекурсия, но очень похоже
         # у нас пара процедур, которые вызывают друг-друга, пока пользователь не введёт корректные данные,
         # и тогда этот цикл прервётся, и управление перейдёт "наружу", в ResponseHandler
 
+# -----------------------------------------------------------------------
