@@ -9,13 +9,16 @@ def get_text_messages(bot, cur_user, message):
     chat_id = message.chat.id
     ms_text = message.text
 
-    if ms_text == "Пёсики":
-        bot.send_photo(chat_id, photo=get_dogURL(), caption="Вот тебе пёсель!")
+    if ms_text == "Собачки":
+        bot.send_photo(chat_id, photo=get_dogURL(), caption="Вот тебе собачка!")
 
     elif ms_text == "Лисята":
         bot.send_photo(chat_id, photo=get_foxURL(), caption="Вот тебе лисёнок!")
 
-    elif ms_text == "Приколдесы":
+    if ms_text == "Котики":
+        bot.send_photo(chat_id, photo=get_catURL(), caption="Вот тебе котенок!")
+
+    elif ms_text == "Странные анекдоты":
         bot.send_message(chat_id, text=get_anekdot())
 
     elif ms_text == "Прислать фильм":
@@ -47,7 +50,6 @@ def get_foxURL():
         # url.split("/")[-1]
     return url
 
-
 # -----------------------------------------------------------------------
 def get_dogURL():
     url = ""
@@ -58,6 +60,15 @@ def get_dogURL():
         # url.split("/")[-1]
     return url
 
+# -----------------------------------------------------------------------
+def get_catURL():
+    url = ""
+    req = requests.get('https://thecatapi.com/api/images/get')
+    if req.status_code == 200:
+        r_json = req.json()
+        url = r_json['image']
+        # url.split("/")[-1]
+    return url
 
 # -----------------------------------------------------------------------
 def get_randomFilm():

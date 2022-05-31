@@ -18,8 +18,8 @@ bot = telebot.TeleBot('5340646996:AAHdPTy1mc4qvVo_mxTF-o2rpi7oqZxC-m8')  # Со�
 def command(message):
     chat_id = message.chat.id
     bot.send_sticker(chat_id, "CAACAgIAAxkBAAIaeWJEeEmCvnsIzz36cM0oHU96QOn7AAJUAANBtVYMarf4xwiNAfojBA")
-    txt_message = f"Хаюшки, {message.from_user.first_name}! Я тестовый бот для курса программирования на языке Python"
-    bot.send_message(chat_id, text=txt_message, reply_markup=Menu.getMenu(chat_id, "Менюшка").markup)
+    txt_message = f"Приветики, {message.from_user.first_name}! Я тестовый бот для курса программирования на языке Python"
+    bot.send_message(chat_id, text=txt_message, reply_markup=Menu.getMenu(chat_id, "Меню").markup)
 
 
 # -----------------------------------------------------------------------
@@ -84,7 +84,7 @@ def get_text_messages(message):
 
     else:  # ======================================= случайный текст
         bot.send_message(chat_id, text="Мне жаль, я не понимаю твою команду, телепортирую в меню ")
-        menuBot.goto_menu(bot, chat_id, "Менюшка")
+        menuBot.goto_menu(bot, chat_id, "Меню")
 
 
 
@@ -112,7 +112,7 @@ def callback_worker(call):
 
 # -----------------------------------------------------------------------
 def send_help(bot, chat_id):
-    bot.send_message(chat_id, "Автор: Горностаева Анастасия")
+    bot.send_message(chat_id, "Автор: Киселева Наталья Валериевна")
     markup = types.InlineKeyboardMarkup()
     btn1 = types.InlineKeyboardButton(text="Напишите автору", url="")
     markup.add(btn1)
