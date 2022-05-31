@@ -63,10 +63,10 @@ def get_dogURL():
 # -----------------------------------------------------------------------
 def get_catURL():
     url = ""
-    req = requests.get('https://thecatapi.com/api/images/get')
+    req = requests.get('http://aws.random.cat//meow')
     if req.status_code == 200:
         r_json = req.json()
-        url = r_json['image']
+        url = r_json['file']
         # url.split("/")[-1]
     return url
 
