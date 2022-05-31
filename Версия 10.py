@@ -17,7 +17,7 @@ bot = telebot.TeleBot('5340646996:AAHdPTy1mc4qvVo_mxTF-o2rpi7oqZxC-m8')  # Со�
 @bot.message_handler(commands="start")
 def command(message):
     chat_id = message.chat.id
-    bot.send_sticker(chat_id, "CAACAgIAAxkBAAIaeWJEeEmCvnsIzz36cM0oHU96QOn7AAJUAANBtVYMarf4xwiNAfojBA")
+    bot.send_sticker(chat_id, "CAACAgIAAxkBAAIBzWKV4uCFp07LssjUEUe3qxowaQmyAAJwEwAC611ASNIumawc0J4fJAQ")
     txt_message = f"Приветики, {message.from_user.first_name}! Я тестовый бот для курса программирования на языке Python"
     bot.send_message(chat_id, text=txt_message, reply_markup=Menu.getMenu(chat_id, "Меню").markup)
 
