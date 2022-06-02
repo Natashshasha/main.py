@@ -4,6 +4,7 @@ import bs4  # BeautifulSoup4
 from telebot import types
 from io import BytesIO
 
+
 # -----------------------------------------------------------------------
 def get_text_messages(bot, cur_user, message):
     chat_id = message.chat.id
@@ -24,6 +25,19 @@ def get_text_messages(bot, cur_user, message):
     elif ms_text == "Прислать фильм":
         send_film(bot, chat_id)
 
+    elif ms_text == "Угадай кто?":
+        get_ManOrNot(bot, chat_id)
+
+    elif ms_text == "Цитаты":
+        bot.send_message(chat_id, text=getRandomquot())
+
+    elif ms_text == "Факт":
+        bot.send_message(chat_id, text=get_fact())
+
+    elif ms_text == "Курс биткоина":
+        bot.send_message(chat_id, text=get_bitcoin())
+
+
 
 # -----------------------------------------------------------------------
 def get_anekdot():
@@ -39,37 +53,18 @@ def get_anekdot():
     else:
         return ""
 
-
 # -----------------------------------------------------------------------
 def get_foxURL():
-    url = ""
-    req = requests.get('https://randomfox.ca/floof/')
-    if req.status_code == 200:
-        r_json = req.json()
-        url = r_json['image']
-        # url.split("/")[-1]
-    return url
-
+    contents = requests.get('https://randomfox.ca/floof/').json()
+    return contents['image']
 # -----------------------------------------------------------------------
 def get_dogURL():
-    url = ""
-    req = requests.get('https://random.dog/woof.json')
-    if req.status_code == 200:
-        r_json = req.json()
-        url = r_json['url']
-        # url.split("/")[-1]
-    return url
-
+    contents = requests.get('https://random.dog/woof.json').json()
+    return contents['url']
 # -----------------------------------------------------------------------
 def get_catURL():
-    url = ""
-    req = requests.get('http://aws.random.cat//meow')
-    if req.status_code == 200:
-        r_json = req.json()
-        url = r_json['file']
-        # url.split("/")[-1]
-    return url
-
+    contents = requests.get('http://aws.random.cat//meow').json()
+    return contents['file']
 # -----------------------------------------------------------------------
 def get_randomFilm():
     url = 'https://randomfilm.ru/'
@@ -99,8 +94,44 @@ def get_randomFilm():
     infoFilm["фильм_url"] = url + details[7].contents[0]["href"]
 
     return infoFilm
+#----------------------------------------------------------------------------
+def getRandomquot():
+    array_anekdots = []
+    req_anek = requests.get('https://randstuff.ru/saying/')
+    if req_anek.status_code == 200:
+        soup = bs4.BeautifulSoup(req_anek.text, "html.parser")
+        result_find = soup.select('table', class_='text')
+        for result in result_find:
+            array_anekdots.append(result.getText().strip())
+    if len(array_anekdots) > 0:
+        return array_anekdots[0]
+    else:
+        return ""
 
+#-----------------------------------------------------------------------
+def get_fact():
+    array_anekdots = []
+    req_anek = requests.get('https://randstuff.ru/fact/random')
+    if req_anek.status_code == 200:
+        soup = bs4.BeautifulSoup(req_anek.text, "html.parser")
+        result_find = soup.select('table', class_='text')
+        for result in result_find:
+            array_anekdots.append(result.getText().strip())
+    if len(array_anekdots) > 0:
+        return array_anekdots[0]
+    else:
+        return ""
+#-----------------------------------------------------------------------
+def get_ManOrNot(bot, chat_id):
 
+    markup = types.InlineKeyboardMarkup()
+    btn1 = types.InlineKeyboardButton(text="Проверить", url="https://vc.ru/dev/58543-thispersondoesnotexist-sayt-generator-realistichnyh-lic")
+    markup.add(btn1)
+
+    req = requests.get("https://thispersondoesnotexist.com/image", allow_redirects=True)
+    if req.status_code == 200:
+        img = BytesIO(req.content)
+        bot.send_photo(chat_id, photo=img, reply_markup=markup, caption="Этот человек реален?")
 # -----------------------------------------------------------------------
 def send_film(bot, chat_id):
     film = get_randomFilm()
@@ -114,3 +145,9 @@ def send_film(bot, chat_id):
     btn2 = types.InlineKeyboardButton(text="СМОТРЕТЬ онлайн", url=film["фильм_url"])
     markup.add(btn1, btn2)
     bot.send_photo(chat_id, photo=film['Обложка_url'], caption=info_str, parse_mode='HTML', reply_markup=markup)
+#------------------------------------------------------------------------
+def get_bitcoin():
+    contents = requests.get('https://api.coindesk.com/v1/bpi/currentprice.json').json()
+    date = contents['time']['updateduk']
+    cost = contents['bpi']['EUR']['rate']
+    return 'Сегодня, ' + date + ' по Британскому времени' + '\n' + 'курс биткоина: ' + cost + ' евро'

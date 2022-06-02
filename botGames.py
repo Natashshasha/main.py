@@ -2,7 +2,7 @@ import requests
 import threading
 from telebot import types
 from menuBot import Menu, goto_menu
-
+from io import BytesIO
 # -----------------------------------------------------------------------
 # вместо того, что бы делать еще один класс, обойдёмся без него - подумайте, почему и как
 activeGames = {}  # Тут будем накапливать все активные игры. У пользователя может быть только одна активная игра
@@ -19,15 +19,6 @@ def getGame(chatID):
 
 def stopGame(chatID):
     activeGames.pop(chatID, None)
-
-
-# def looper(classGame):
-#     if classGame.gameTimeLeft > 0:
-#         classGame.gameTimeLeft -= 1
-#         # print(classGame.gameTimeLeft)
-#         classGame.setTextGame()
-#         threading.Timer(1, looper, args=[classGame]).start()
-#
 
 # -----------------------------------------------------------------------
 class Card:
@@ -177,6 +168,44 @@ class Game21:
             text_game = "Очков: " + str(self.score) + " в колоде осталось карт: " + str(self.remaining)
 
         return text_game
+
+
+# -----------------------------------------------------------------------
+class GameRPS:
+    values = ["Камень", "Ножницы", "Бумага"]
+    name = "Игра Камень-Ножницы-Бумага (Мультиплеер)"
+    text_rules = "<b>Победитель определяется по следующим правилам:</b>\n" \
+                 "1. Камень побеждает ножницы\n" \
+                 "2. Бумага побеждает камень\n" \
+                 "3. Ножницы побеждают бумагу\n" \
+                 "подробная информация об игре: <a href='https://ru.wikipedia.org/wiki/%D0%9A%D0%B0%D0%BC%D0%B5%D0%BD%D1%8C,_%D0%BD%D0%BE%D0%B6%D0%BD%D0%B8%D1%86%D1%8B,_%D0%B1%D1%83%D0%BC%D0%B0%D0%B3%D0%B0'>Wikipedia</a>"
+    url_picRules = "https://i.ytimg.com/vi/Gvks8_WLiw0/maxresdefault.jpg"
+
+    def __init__(self):
+        self.computerChoice = self.__class__.getRandomChoice()
+
+    def newGame(self):
+        self.computerChoice = self.__class__.getRandomChoice()
+
+    @classmethod
+    def getRandomChoice(cls):
+        lenValues = len(cls.values)
+        import random
+        rndInd = random.randint(0, lenValues - 1)
+        return cls.values[rndInd]
+
+    def playerChoice(self, player1Choice):
+        winner = None
+
+        code = player1Choice[0] + self.computerChoice[0]
+        if player1Choice == self.computerChoice:
+            winner = "Ничья!"
+        elif code == "КН" or code == "БК" or code == "НБ":
+            winner = "Игрок выиграл!"
+        else:
+            winner = "Компьютер выиграл!"
+
+        return f"{player1Choice} vs {self.computerChoice} = " + winner
 
 
 # -----------------------------------------------------------------------
