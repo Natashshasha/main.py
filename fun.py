@@ -3,7 +3,7 @@ import requests
 import bs4  # BeautifulSoup4
 from telebot import types
 from io import BytesIO
-
+import json
 
 # -----------------------------------------------------------------------
 def get_text_messages(bot, cur_user, message):
