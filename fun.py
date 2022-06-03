@@ -34,10 +34,6 @@ def get_text_messages(bot, cur_user, message):
     elif ms_text == "Факт":
         bot.send_message(chat_id, text=get_fact())
 
-    elif ms_text == "Курс биткоина":
-        bot.send_message(chat_id, text=get_bitcoin())
-
-
 
 # -----------------------------------------------------------------------
 def get_anekdot():
@@ -145,9 +141,4 @@ def send_film(bot, chat_id):
     btn2 = types.InlineKeyboardButton(text="СМОТРЕТЬ онлайн", url=film["фильм_url"])
     markup.add(btn1, btn2)
     bot.send_photo(chat_id, photo=film['Обложка_url'], caption=info_str, parse_mode='HTML', reply_markup=markup)
-#------------------------------------------------------------------------
-def get_bitcoin():
-    contents = requests.get('https://api.coindesk.com/v1/bpi/currentprice.json').json()
-    date = contents['time']['updateduk']
-    cost = contents['bpi']['EUR']['rate']
-    return 'Сегодня, ' + date + ' по Британскому времени' + '\n' + 'курс биткоина: ' + cost + ' евро'
+

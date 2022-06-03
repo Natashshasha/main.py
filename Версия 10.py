@@ -146,6 +146,7 @@ def get_text_messages(message):
             gameRPS = botGames.newGame(chat_id, botGames.GameRPS())  # создаём новый экземпляр игры и регистрируем его
             bot.send_photo(chat_id, photo=gameRPS.url_picRules, caption=gameRPS.text_rules, parse_mode='HTML')
 
+
         return  # мы вошли в подменю, и дальнейшая обработка не требуется
 
     # проверим, является ли текст текущий команды кнопкой действия
